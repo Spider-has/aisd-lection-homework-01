@@ -33,25 +33,36 @@ namespace khasnulin
   // Создать новый элемент после текущего
   template < class T > BiList< T > *insertAfter(BiList< T > *h, const T &val)
   {
-    return insertBefore(h->next, v);
+    return insertBefore(h->next, val);
   }
 
   // Удалить текущий элемент списка, вернуть указатель на следующий
   template < class T > BiList< T > *remove(BiList< T > *h)
   {
-    return nullptr;
+    if (!h)
+      return nullptr;
+    if (h->next == h)
+    {
+      delete h;
+      return nullptr;
+    }
+    BiList< T > *next = h->next;
+    h->prev->next = next;
+    next->prev = h->prev;
+    delete h;
+    return next;
   }
 
   // Удалить следующий элемент списка, вернуть указатель новый следующий
   template < class T > BiList< T > *eraseNext(BiList< T > *h)
   {
-    return nullptr;
+    return remove(h->next);
   }
 
   // Удалить предыдущий элемент списка, вернуть указатель новый предыдущий
   template < class T > BiList< T > *erasePrev(BiList< T > *h)
   {
-    return nullptr;
+    return remove(h->prev);
   }
 
   // Удалить все элементы списка
