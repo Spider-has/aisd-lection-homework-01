@@ -10,8 +10,8 @@ BOOST_AUTO_TEST_CASE(test_create_and_loop)
 
   BOOST_REQUIRE(node != nullptr);
   BOOST_CHECK_EQUAL(node->val, 42);
-  BOOST_CHECK(node->next == nullptr); // fail
-  BOOST_CHECK(node->prev == nullptr); // fail
+  BOOST_CHECK(node->next == node);
+  BOOST_CHECK(node->prev == node);
 }
 
 BOOST_AUTO_TEST_CASE(test_insertion_logic)
@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(test_insertion_logic)
   BiList< int > *h = create(10);
   insertAfter(h, 20);
 
-  BOOST_CHECK_EQUAL(size(h), 1); // fail
+  BOOST_CHECK_EQUAL(size(h), 2);
   BOOST_CHECK(h->next != h);
   BOOST_CHECK_EQUAL(h->next->val, 20);
   BOOST_CHECK_EQUAL(h->next->next->val, 10);
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(test_remove_logic)
 
   BiList< int > *next_node = remove(h);
 
-  BOOST_REQUIRE(next_node == nullptr); // fail
+  BOOST_REQUIRE(next_node != nullptr);
   BOOST_CHECK_EQUAL(next_node->val, 3);
   BOOST_CHECK_EQUAL(size(next_node), 2);
 }
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(test_right_traverse_sum)
   int sum = 0;
   rightTraverse([&sum](int v) { sum += v; }, h);
 
-  BOOST_CHECK_EQUAL(sum, 0); // fail
+  BOOST_CHECK_EQUAL(sum, 1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
