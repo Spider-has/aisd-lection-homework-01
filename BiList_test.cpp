@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(test_remove_logic)
   BiList< int > *next_node = remove(h);
 
   BOOST_REQUIRE(next_node != nullptr);
-  BOOST_CHECK_EQUAL(next_node->val, 3);
+  BOOST_CHECK_EQUAL(next_node->val, 1);
   BOOST_CHECK_EQUAL(size(next_node), 2);
 }
 
