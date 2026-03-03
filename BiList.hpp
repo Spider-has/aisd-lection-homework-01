@@ -24,13 +24,16 @@ namespace khasnulin
   // Создать новый элемент перед текущим
   template < class T > BiList< T > *insertBefore(BiList< T > *h, const T &val)
   {
-    return nullptr;
+    if (!h)
+      return create(val);
+    h->prev->next = new BiList< T >{val, h, h->prev};
+    return h->prev = h->prev->next;
   }
 
   // Создать новый элемент после текущего
   template < class T > BiList< T > *insertAfter(BiList< T > *h, const T &val)
   {
-    return nullptr;
+    return insertBefore(h->next, v);
   }
 
   // Удалить текущий элемент списка, вернуть указатель на следующий
@@ -88,7 +91,14 @@ namespace khasnulin
   // Обойти все элементы по кругу и вернуть их количество.
   template < class T > size_t size(BiList< T > *h)
   {
-    return 0;
+    if (!h)
+      return 0;
+    size_t count = 1;
+    BiList< T > *elem = h->next;
+    for (; elem != h; ++count, elem = elem->next)
+    {
+    }
+    return count;
   }
 }
 
