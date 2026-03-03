@@ -83,3 +83,46 @@ BOOST_AUTO_TEST_CASE(test_right_traverse_sum)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(ConversionTests)
+
+using namespace khasnulin;
+
+BOOST_AUTO_TEST_CASE(test_for_empty_array)
+{
+  int *arr = nullptr;
+  BiList< int > *list = convert(arr, 0);
+  BOOST_REQUIRE(list == nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(test_for_single_element_array)
+{
+  int arr[1] = {1};
+  BiList< int > *list = convert(arr, 1);
+
+  BOOST_REQUIRE(list != nullptr);
+  BOOST_CHECK_EQUAL(size(list), 1);
+  BOOST_CHECK(list->next == list);
+
+  list = clear(list);
+  BOOST_REQUIRE(list == nullptr);
+}
+
+BOOST_AUTO_TEST_CASE(test_from_regular_array)
+{
+  int arr[] = {10, 20, 30};
+  auto list = convert(arr, 3);
+
+  BOOST_REQUIRE(list != nullptr);
+  BOOST_CHECK_EQUAL(size(list), 3);
+  BOOST_CHECK_EQUAL(list->val, 10);
+  BOOST_CHECK_EQUAL(list->next->val, 20);
+  BOOST_CHECK_EQUAL(list->next->next->val, 30);
+  BOOST_CHECK_EQUAL(list->next->next->next, list);
+
+  BOOST_CHECK_EQUAL(list->prev->val, 30);
+
+  clear(list);
+}
+
+BOOST_AUTO_TEST_SUITE_END()

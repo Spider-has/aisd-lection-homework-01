@@ -128,6 +128,14 @@ namespace khasnulin
     rightTraverse([&count](const T &) { count++; }, h);
     return count;
   }
+
+  // Конвертирует массив элементов типа T в кольцевой двусвязный список.
+  // Возвращает указатель на первый элемент.
+  // Если size == 0, возвращает nullptr.
+  template < class T > BiList< T > *convert(const T *a, size_t k)
+  {
+    return nullptr;
+  }
 }
 
 #endif
