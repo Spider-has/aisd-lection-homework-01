@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(test_right_traverse_sum)
   int sum = 0;
   rightTraverse([&sum](int v) { sum += v; }, h);
 
-  BOOST_CHECK_EQUAL(sum, 1);
+  BOOST_CHECK_EQUAL(sum, 6);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
