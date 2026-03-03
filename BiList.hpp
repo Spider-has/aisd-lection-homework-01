@@ -134,7 +134,23 @@ namespace khasnulin
   // Если size == 0, возвращает nullptr.
   template < class T > BiList< T > *convert(const T *a, size_t k)
   {
-    return nullptr;
+    if (!k || !a)
+      return nullptr;
+    BiList< T > *head = create(a[0]);
+    BiList< T > *tail = head;
+    try
+    {
+      for (size_t i = 1; i < k; ++i)
+      {
+        tail = insertAfter(tail, a[i]);
+      }
+    }
+    catch (...)
+    {
+      clear(head);
+      throw;
+    }
+    return head;
   }
 }
 
