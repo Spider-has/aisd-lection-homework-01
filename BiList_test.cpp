@@ -56,6 +56,20 @@ BOOST_AUTO_TEST_CASE(test_remove_empty_logic)
   BOOST_REQUIRE(h == nullptr);
 }
 
+BOOST_AUTO_TEST_CASE(test_clear_list)
+{
+  BiList< int > *h = create(1);
+  h = insertBefore(h, 2);
+  h = insertAfter(h, 3);
+  h = insertAfter(h, 4);
+  h = insertAfter(h, 5);
+
+  BOOST_CHECK_EQUAL(size(h), 5);
+  h = clear(h);
+  BOOST_CHECK_EQUAL(size(h), 0);
+  BOOST_REQUIRE(h == nullptr);
+}
+
 BOOST_AUTO_TEST_CASE(test_right_traverse_sum)
 {
   BiList< int > *h = create(1);
