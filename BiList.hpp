@@ -12,10 +12,16 @@ namespace khasnulin
     BiList< T > *prev;
   };
 
+  // Получившийся неявный интерфейс:
+  // 1) Наличие конструктора копирования
+  // 2) Наличие деструктора
+  // 3) В traverse наличие перегруженного оператора круглые скобки, принимающего в качестве аргумента T
+  // 4) В traverse наличие конструктора копирования у объекта F
+
   // Создает пустой двухсвязный список, который ссылается сам на себя в next и prev
   template < class T > BiList< T > *create(const T &val)
   {
-    BiList< T > *elem = new BiList< T >{val, nullptr, nullptr};
+    BiList< T > *elem = new BiList< T >{val, nullptr, nullptr}; // T::T(const & v)
     elem->next = elem;
     elem->prev = elem;
     return elem;
@@ -26,7 +32,7 @@ namespace khasnulin
   {
     if (!h)
       return create(val);
-    h->prev->next = new BiList< T >{val, h, h->prev};
+    h->prev->next = new BiList< T >{val, h, h->prev}; // T::T(const & v)
     return h->prev = h->prev->next;
   }
 
@@ -43,13 +49,13 @@ namespace khasnulin
       return nullptr;
     if (h->next == h)
     {
-      delete h;
+      delete h; // ~T::T()
       return nullptr;
     }
     BiList< T > *next = h->next;
     h->prev->next = next;
     next->prev = h->prev;
-    delete h;
+    delete h; // ~T::T()
     return next;
   }
 
@@ -75,13 +81,13 @@ namespace khasnulin
 
   // Обойти элементы списка от текущего двигаясь влево, пока снова не встретим end. Для каждого
   // элемента вызывать F(val)
-  template < class T, class F > F leftTraverse(F f, BiList< T > *h, BiList< T > *e)
+  template < class T, class F > F leftTraverse(F f, BiList< T > *h, BiList< T > *e) // F::F(const &F)
   {
     if (!h)
       return f;
     do
     {
-      f(h->val);
+      f(h->val); // operator::()(T) у F. T::T(const T& val)
       h = h->prev;
     } while (h != e);
     return f;
@@ -95,7 +101,7 @@ namespace khasnulin
       return f;
     do
     {
-      f(h->val);
+      f(h->val); // operator::()(T) у F. T::T(const T& val)
       h = h->next;
     } while (h != e);
     return f;
