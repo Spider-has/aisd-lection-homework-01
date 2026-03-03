@@ -77,6 +77,13 @@ namespace khasnulin
   // элемента вызывать F(val)
   template < class T, class F > F leftTraverse(F f, BiList< T > *h, BiList< T > *e)
   {
+    if (!h)
+      return f;
+    do
+    {
+      f(h->val);
+      h = h->prev;
+    } while (h != e);
     return f;
   }
 
@@ -84,6 +91,13 @@ namespace khasnulin
   // элемента вызывать F(val)
   template < class T, class F > F rightTraverse(F f, BiList< T > *h, BiList< T > *e)
   {
+    if (!h)
+      return f;
+    do
+    {
+      f(h->val);
+      h = h->next;
+    } while (h != e);
     return f;
   }
 
@@ -91,26 +105,21 @@ namespace khasnulin
   // элемента вызывать F(val)
   template < class T, class F > F leftTraverse(F f, BiList< T > *h)
   {
-    return f;
+    return leftTraverse(f, h, h);
   }
 
   // Обойти все элементы списка от текущего двигаясь вправо, пока не вернемся в начальный элемент Для каждого
   // элемента вызывать F(val)
   template < class T, class F > F rightTraverse(F f, BiList< T > *h)
   {
-    return f;
+    return rightTraverse(f, h, h);
   }
 
   // Обойти все элементы по кругу и вернуть их количество.
   template < class T > size_t size(BiList< T > *h)
   {
-    if (!h)
-      return 0;
-    size_t count = 1;
-    BiList< T > *elem = h->next;
-    for (; elem != h; ++count, elem = elem->next)
-    {
-    }
+    size_t count = 0;
+    rightTraverse([&count](const T &) { count++; }, h);
     return count;
   }
 }
