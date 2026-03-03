@@ -68,7 +68,9 @@ namespace khasnulin
   // Удалить все элементы списка
   template < class T > BiList< T > *clear(BiList< T > *h)
   {
-    return nullptr;
+    while (h)
+      h = remove(h);
+    return h;
   }
 
   // Обойти элементы списка от текущего двигаясь влево, пока снова не встретим end. Для каждого
