@@ -15,7 +15,10 @@ namespace khasnulin
   // Создает пустой двухсвязный список, который ссылается сам на себя в next и prev
   template < class T > BiList< T > *create(const T &val)
   {
-    return nullptr;
+    BiList< T > *elem = new BiList< T >{val, nullptr, nullptr};
+    elem->next = elem;
+    elem->prev = elem;
+    return elem;
   }
 
   // Создать новый элемент перед текущим
