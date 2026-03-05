@@ -1,7 +1,7 @@
 #ifndef BILIST_HPP
 #define BILIST_HPP
 
-#include "iostream"
+#include <cstddef>
 
 namespace khasnulin
 {
@@ -15,13 +15,13 @@ namespace khasnulin
   // Получившийся неявный интерфейс:
   // 1) Наличие конструктора копирования
   // 2) Наличие деструктора
-  // 3) В traverse наличие перегруженного оператора круглые скобки, принимающего в качестве аргумента T
+  // 3) В traverse наличие перегруженного оператора круглые скобки у объекта F, принимающего в качестве аргумента T
   // 4) В traverse наличие конструктора копирования у объекта F
 
   // Создает пустой двухсвязный список, который ссылается сам на себя в next и prev
   template < class T > BiList< T > *create(const T &val)
   {
-    BiList< T > *elem = new BiList< T >{val, nullptr, nullptr}; // T::T(const & v)
+    BiList< T > *elem = new BiList< T >{val, nullptr, nullptr}; // T::T(const T& v)
     elem->next = elem;
     elem->prev = elem;
     return elem;
@@ -31,8 +31,10 @@ namespace khasnulin
   template < class T > BiList< T > *insertBefore(BiList< T > *h, const T &val)
   {
     if (!h)
+    {
       return create(val);
-    h->prev->next = new BiList< T >{val, h, h->prev}; // T::T(const & v)
+    }
+    h->prev->next = new BiList< T >{val, h, h->prev}; // T::T(const T& v)
     return h->prev = h->prev->next;
   }
 
@@ -46,7 +48,9 @@ namespace khasnulin
   template < class T > BiList< T > *remove(BiList< T > *h)
   {
     if (!h)
+    {
       return nullptr;
+    }
     if (h->next == h)
     {
       delete h; // ~T::T()
@@ -75,7 +79,9 @@ namespace khasnulin
   template < class T > BiList< T > *clear(BiList< T > *h)
   {
     while (h)
+    {
       h = remove(h);
+    }
     return h;
   }
 
@@ -84,10 +90,12 @@ namespace khasnulin
   template < class T, class F > F leftTraverse(F f, BiList< T > *h, BiList< T > *e) // F::F(const &F)
   {
     if (!h)
+    {
       return f;
+    }
     do
     {
-      f(h->val); // operator::()(T) у F. T::T(const T& val)
+      f(h->val); // F::operator()(T). T::T(const T& val)
       h = h->prev;
     } while (h != e);
     return f;
@@ -98,10 +106,12 @@ namespace khasnulin
   template < class T, class F > F rightTraverse(F f, BiList< T > *h, BiList< T > *e)
   {
     if (!h)
+    {
       return f;
+    }
     do
     {
-      f(h->val); // operator::()(T) у F. T::T(const T& val)
+      f(h->val); // F::operator()(T). T::T(const T& val)
       h = h->next;
     } while (h != e);
     return f;
@@ -135,7 +145,9 @@ namespace khasnulin
   template < class T > BiList< T > *convert(const T *a, size_t k)
   {
     if (!k || !a)
+    {
       return nullptr;
+    }
     BiList< T > *head = create(a[0]);
     BiList< T > *tail = head;
     try
