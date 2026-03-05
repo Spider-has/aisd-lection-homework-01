@@ -2,6 +2,7 @@
 #define BILIST_HPP
 
 #include <cstddef>
+#include <utility>
 
 namespace khasnulin
 {
@@ -19,29 +20,36 @@ namespace khasnulin
   // 4) В traverse наличие конструктора копирования у объекта F
 
   // Создает пустой двухсвязный список, который ссылается сам на себя в next и prev
-  template < class T > BiList< T > *create(const T &val)
+  template < class T, class... Args > BiList< T > *create(Args &&...args)
   {
-    BiList< T > *elem = new BiList< T >{val, nullptr, nullptr}; // T::T(const T& v)
+    BiList< T > *elem = new BiList< T >{T(std::forward< Args >(args)...), nullptr, nullptr}; // T::T(const T& v)
     elem->next = elem;
     elem->prev = elem;
     return elem;
   }
 
   // Создать новый элемент перед текущим
-  template < class T > BiList< T > *insertBefore(BiList< T > *h, const T &val)
+  template < class T, class... Args > BiList< T > *insertBefore(BiList< T > *h, Args &&...args)
   {
+    BiList< T > *elem = create< T >(std::forward< Args >(args)...);
     if (!h)
     {
-      return create(val);
+      return elem;
     }
-    h->prev->next = new BiList< T >{val, h, h->prev}; // T::T(const T& v)
+    h->prev->next = elem;
+    elem->next = h;
+    elem->prev = h->prev;
     return h->prev = h->prev->next;
   }
 
   // Создать новый элемент после текущего
-  template < class T > BiList< T > *insertAfter(BiList< T > *h, const T &val)
+  template < class T, class... Args > BiList< T > *insertAfter(BiList< T > *h, Args &&...args)
   {
-    return insertBefore(h->next, val);
+    if (!h)
+    {
+      return create< T >(std::forward< Args >(args)...);
+    }
+    return insertBefore< T >(h->next, std::forward< Args >(args)...);
   }
 
   // Удалить текущий элемент списка, вернуть указатель на следующий
@@ -148,7 +156,7 @@ namespace khasnulin
     {
       return nullptr;
     }
-    BiList< T > *head = create(a[0]);
+    BiList< T > *head = create< T >(a[0]);
     BiList< T > *tail = head;
     try
     {
